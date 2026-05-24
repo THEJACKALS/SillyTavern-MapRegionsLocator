@@ -1,11 +1,11 @@
 {
-    "display_name": "Map Extension",
+    "display_name": "Map Region Locator",
     "loading_order": 9,
     "requires": [],
     "optional": [],
     "js": "index.js",
     "css": "style.css",
-    "author": "Elthial",
-    "version": "1.0.0",
+    "author": "Elthial, The Jackals, MapRegionLocator contributors",
+    "version": "1.1.0",
     "homePage": "https://github.com/Elthial/SillyTavern-Map"
 }

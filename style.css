@@ -1,66 +1,264 @@
-
 #map {
-	position: absolute;	
-    margin: 0 auto;
-	left: 0;
-	right: 0;
-	width: var(--sheldWidth);
-	top: var(--topBarBlockSize);
-	bottom: 40svh;
-	overflow: hidden;
+    position: absolute;
+    inset: var(--topBarBlockSize) 2vw 4vh 2vw;
+    width: auto !important;
+    min-width: min(1120px, 96vw);
+    overflow: hidden;
 }
 
-#map img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* or cover, based on your preference */
+#map.map-shell {
+    resize: both;
 }
 
-.container {
-            /*max-width: 1000px;
-            max-height: 1000px;*/
-            border: 1px solid #000; /* Optional: just to show the boundary of the div */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-.container svg {
-    max-width: 100%;
-    max-height: 100%;
+.map-region-locator {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 32px);
+    min-height: 520px;
+    border-top: 1px solid var(--SmartThemeBorderColor);
+    background: color-mix(in srgb, var(--SmartThemeBodyColor) 88%, #111 12%);
 }
 
-/*will apply to anything 1000px or less. this catches ipads, horizontal phones, and vertical phones)*/
+.map-settings-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
+    gap: 8px;
+    align-items: end;
+}
+
+.map-settings-grid label {
+    grid-column: 1 / -1;
+    margin-bottom: -4px;
+}
+
+.map-toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px;
+    border-bottom: 1px solid var(--SmartThemeBorderColor);
+}
+
+.map-tool-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+.map-tool.active {
+    outline: 2px solid var(--SmartThemeQuoteColor);
+    background: color-mix(in srgb, var(--SmartThemeQuoteColor) 24%, transparent);
+}
+
+.map-workspace {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    min-height: 0;
+    flex: 1;
+}
+
+.map-canvas {
+    width: 100%;
+    height: 100%;
+    min-height: 460px;
+    background: #15171a;
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.svg-path {
+    cursor: pointer;
+    transition: fill 120ms ease, stroke-width 120ms ease;
+}
+
+.svg-path:hover {
+    fill: rgb(60 166 255 / 28%);
+    stroke-width: 5;
+}
+
+.svg-path.selected {
+    fill: rgb(247 201 72 / 26%);
+    stroke: #f7c948;
+}
+
+.map-region-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 12px;
+    border-left: 1px solid var(--SmartThemeBorderColor);
+    background: color-mix(in srgb, var(--SmartThemeBlurTintColor) 82%, #000 18%);
+    overflow: auto;
+}
+
+.map-panel-header {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.map-panel-header small,
+.map-global-lore {
+    color: var(--SmartThemeEmColor);
+}
+
+.map-global-lore {
+    max-height: 96px;
+    overflow: auto;
+    padding: 8px;
+    border: 1px solid var(--SmartThemeBorderColor);
+    border-radius: 6px;
+    font-size: 0.9em;
+    line-height: 1.35;
+}
+
+.map-region-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow: auto;
+}
+
+.map-region-row {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--SmartThemeBorderColor);
+    border-radius: 6px;
+    color: var(--SmartThemeBodyColor);
+    background: transparent;
+    text-align: left;
+}
+
+.map-region-row span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.map-region-row.active,
+.map-region-row:hover {
+    border-color: var(--SmartThemeQuoteColor);
+    background: color-mix(in srgb, var(--SmartThemeQuoteColor) 18%, transparent);
+}
+
+.map-tooltip {
+    position: absolute;
+    z-index: 5;
+    display: none;
+    max-width: 260px;
+    padding: 8px 10px;
+    border: 1px solid var(--SmartThemeBorderColor);
+    border-radius: 6px;
+    color: var(--SmartThemeBodyColor);
+    background: color-mix(in srgb, var(--SmartThemeBlurTintColor) 92%, #000 8%);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 28%);
+    pointer-events: none;
+}
+
+.map-tooltip strong,
+.map-tooltip span {
+    display: block;
+}
+
+.map-tooltip span {
+    margin-top: 3px;
+    color: var(--SmartThemeEmColor);
+}
+
+.map-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgb(0 0 0 / 56%);
+}
+
+.map-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: min(720px, 96vw);
+    max-height: 92vh;
+    padding: 14px;
+    overflow: auto;
+    border: 1px solid var(--SmartThemeBorderColor);
+    border-radius: 8px;
+    color: var(--SmartThemeBodyColor);
+    background: var(--SmartThemeBlurTintColor);
+    box-shadow: 0 20px 64px rgb(0 0 0 / 38%);
+}
+
+.map-modal header,
+.map-modal footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.map-modal label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.map-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.map-modal textarea {
+    resize: vertical;
+}
+
+.map-modal .danger {
+    color: #ffb4b4;
+    border-color: #9e2b2b;
+}
+
 @media screen and (max-width: 1000px) {
-
-    #map {    
-		width: 100% !important;
-        margin: 0 auto;
-        max-width: 100%;
-        left: 0 !important;
+    #map {
+        inset: var(--topBarBlockSize) 0 0 0;
+        min-width: 100%;
+        width: 100% !important;
+        height: calc(100svh - var(--topBarBlockSize)) !important;
         resize: none !important;
-        top: var(--topBarBlockSize);
-		height: calc(100vh - (40svh + var(--topBarBlockSize)))  !important;  
+    }
+
+    .map-workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(360px, 1fr) auto;
+    }
+
+    .map-region-panel {
+        max-height: 220px;
+        border-left: 0;
+        border-top: 1px solid var(--SmartThemeBorderColor);
+    }
+
+    .map-settings-grid,
+    .map-form-grid {
+        grid-template-columns: 1fr;
     }
 }
 
-/*iOS specific*/
-@supports (-webkit-touch-callout: none) {  
-     #map {
-        margin: unset;
-        padding: unset;
-        width: unset;
-        height: unset;
-        min-width: unset;
-        max-width: unset;
-        min-height: unset;
-        max-height: unset;
-        width: 100vw;
+@supports (-webkit-touch-callout: none) {
+    #map {
         width: 100svw;
-        height: calc(100vh - 36px);
         height: calc(100svh - 36px);
-        padding-right: max(env(safe-area-inset-right), 0px);
-        padding-left: max(env(safe-area-inset-left), 0px);
+        padding-right: max(env(safe-area-inset-right), 0);
+        padding-left: max(env(safe-area-inset-left), 0);
         padding-bottom: 0;
-    } 
+    }
 }

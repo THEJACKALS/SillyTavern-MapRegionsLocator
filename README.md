@@ -1,76 +1,100 @@
-# SillyTavern-Map Extension
+# SillyTavern Map Region Locator
 
-<This project is still in prototype phase and will undergo changes>
+Interactive region mapping and lore injection extension for SillyTavern.
 
-This extension allows you to interact with STscripts using a graphical user interface.
-This allows users to extend STscripts into graphically interactive fashion.
+This extension turns a static PNG/JPG/WEBP map into an interactive map project with regions, markers, metadata, linked lore references, and contextual `/sys` injection for roleplay.
 
 ## Features
 
-- Background image in MovingUI dialog box
-- User definable SVG Shapes with OnHover and OnClick triggering STScript
+- Import a map image and create a saved project in browser storage
+- Initial lore setup with either an existing Lorebook name or short global map context
+- Fullscreen MovingUI map editor
+- Zoom and pan
+- Rectangle, polygon, and marker tools
+- Region configuration popup with:
+  - name and description
+  - faction, climate, danger level, population, tags, notes
+  - marker type such as city, castle, dungeon, village, camp, or ruins
+  - linked Lorebook, Character Card, Scenario, World Info, and Tavern Memory references
+  - optional STscript on click
+- Hover tooltip and click-to-edit region details
+- Context injection for the currently active region
+- Project export/import as JSON
+- Backward compatibility with the prototype `shapes` JSON format
 
-## Installation and Usage
+## Usage
 
-### Installation
+Open the extensions menu and click **Open Map**, or use:
 
-Install using SillyTavern's third-party extensions installer using this link:
-
-https://github.com/Elthial/SillyTavern-Map
-
-### Usage
-
-- Open the "Map" extension menu.
-- Select the map in the dropdown list
-- Click the "Load Map" button
-
-Alternatively:
-
-- Use slashcommand ```"/Map <MapFileName>"``` to load a map by name
-
-### Creating a Map
-
-A map currently has two components:
-- A Background image file
-- A JSON file defining the SVG Shapes and STscript
-
-(Later development will move the JSON file into the PNG metadata similar to ST character cards)
-
-Most of the JSON file is self explainatory. 
-The SVG Shapes have the following format
+```text
+/show-map
 ```
+
+To create a new map project:
+
+1. Open **Map Region Locator** in extension settings.
+2. Click **New**.
+3. Upload a PNG/JPG/WEBP map image.
+4. Choose whether the map already has a related Lorebook.
+5. Add either a Lorebook name or a short global lore description.
+6. Draw regions or place markers in the editor.
+7. Save the project.
+
+To inject the selected/active region context into chat:
+
+```text
+/map-region-context
+```
+
+Alias:
+
+```text
+/mrc
+```
+
+Clicking **Inject Active Region** in the side panel does the same thing.
+
+## Project JSON
+
+Map data is stored separately from the source image. Exported projects use this structure:
+
+```json
 {
-	"id": "Player-house",
-	"path": "M 150 500 L 193 385 L 261 345 L 330 400 L 330 435 L 365 455 L 360 510 L 285 550 Z",
-	"color": "#CC0000",
-	"script": "/go flux | /bg bedroom clean | /sys {{user}} returns home and finds {{char}} lying on their bed."
-},
+  "id": "map_abc123",
+  "name": "Etheria World Map",
+  "map": "etheria_worldmap.png",
+  "globalLore": "Etheria adalah dunia fantasi dengan berbagai kerajaan...",
+  "linkedLorebook": "etheria_lore",
+  "backgroundImage": {
+    "file": "data:image/png;base64,...",
+    "width": 1792,
+    "height": 1024
+  },
+  "regions": [
+    {
+      "id": "silvaria_001",
+      "name": "Silvaria",
+      "type": "city",
+      "description": "Kota perdagangan besar dengan pasar pusat dan barak militer.",
+      "shapeType": "polygon",
+      "path": "M 150 500 L 193 385 L 261 345 Z",
+      "color": "#3ca6ff",
+      "tags": ["trade", "military"],
+      "linkedLorebook": "silvaria_lore",
+      "metadata": {
+        "faction": "Merchant League",
+        "climate": "Temperate",
+        "dangerLevel": "Medium",
+        "population": "120000",
+        "notes": "Controls the eastern trade road."
+      }
+    }
+  ]
+}
 ```
 
-- ```"path"``` defines the shape of the SVG shape using SVG path notation
-- ```"M"``` : Origin point
-- ```"L"``` : Line drawn from the previous point to this absolute point
-- ```"Z"``` : Line from the previous point to the origin
+The bundled `Japan.Json` sample still uses the original `shapes` format and is normalized automatically when loaded.
 
-Load your background image in paint or other image editor then use the cursor to find the X, Y positions within your images for your shapes.
-Then using those co-ordinates create your SVG shape path.
+## Notes
 
-- ```"color"``` : Transparency highlight colour for mouse OnHover events
-- ```"script"``` : STscript to be executed upon OnClick event
-
-Note: 
-Using ```"/Map <MapFileName>"``` can allow chaining of maps together is a nested structure. 
-This can allow hierarchical maps such as Town -> Building -> Room.
-If a back button is zoned on the image for the parent then full tree traversal is possible.
-
-## Prerequisites
-
-- Latest release version of SillyTavern.
-
-## Support and Contributions
-
-Feel free to contribute.
-
-## License
-
-MIT License
+Projects created from uploaded images are stored in browser `localStorage`. Use **Export** to keep portable backups or move projects between SillyTavern installs.
