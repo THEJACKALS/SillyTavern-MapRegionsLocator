@@ -66,6 +66,7 @@ Older browser-stored projects from IndexedDB/localStorage are migrated automatic
 1. Open **Extensions** settings.
 2. Expand **Map Region Locator**.
 3. Click **New** to create a map project, or **Edit** to open the selected project.
+<img width="740" height="615" alt="image" src="https://github.com/user-attachments/assets/b1c30c88-28e3-4b35-942e-c1c76549f08b" />
 4. Upload a PNG/JPG/WEBP map image.
 5. Choose whether the map has related World/Lorebooks.
 6. Choose whether this map is also used by other Character Cards.
@@ -77,8 +78,11 @@ Older browser-stored projects from IndexedDB/localStorage are migrated automatic
 
 1. Open the wand/extensions menu near the message bar.
 2. Click **Open Map**.
+<img width="265" height="426" alt="image" src="https://github.com/user-attachments/assets/43a3c3ef-984b-44d1-b75d-3790b653654f" />
 3. Select a marker or region.
+<img width="1653" height="870" alt="image" src="https://github.com/user-attachments/assets/ba9bd62a-0e72-4fe8-9ca8-0c78226634fa" />
 4. A chip like `Map: Forestome Hall` appears above the message box.
+<img width="1071" height="492" alt="image" src="https://github.com/user-attachments/assets/c47f2aba-1b5e-4a0d-85e4-801e9452a0b7" />
 5. Send your message.
 
 The selected region context is injected invisibly for that message. The chat will show a small map badge on the user message, but it will not create a separate visible system message.
