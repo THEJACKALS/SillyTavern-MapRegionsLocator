@@ -172,3 +172,9 @@ Exported projects use this general structure:
 ```
 
 The bundled `Japan.Json` sample still uses the original `shapes` format and is normalized automatically when loaded.
+
+## Credits
+
+Special thanks to **Elthial** for the original SillyTavern Map extension foundation.
+
+This project is distributed under the MIT License. See `LICENSE` for details.
